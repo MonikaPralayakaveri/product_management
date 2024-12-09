@@ -2,7 +2,7 @@
 
 # Product Management System
 
-This is a product management system built with Go, Gin, PostgreSQL, RabbitMQ, Redis, and a simple image processing microservice. The system allows users to add products, fetch products by ID, and manage product data with caching and asynchronous image processing.
+This product management system was built with Go, Gin, PostgreSQL, RabbitMQ, Redis, and a simple image processing microservice. The system allows users to add products, fetch products by ID, and manage product data with caching and asynchronous image processing.
 
 ## **Architecture Overview**
 
@@ -11,7 +11,7 @@ This is a product management system built with Go, Gin, PostgreSQL, RabbitMQ, Re
   - **Database Layer**: Manages database interactions using GORM ORM.
   - **Image Processing**: Asynchronous microservice for compressing product images.
   - **Caching**: Redis is used to cache frequently accessed product data.
-  - **Message Queue**: RabbitMQ is used to send image processing tasks asynchronously.
+  - **Message Queue**: RabbitMQ sends image processing tasks asynchronously.
 
 ## **Setup Instructions**
 
@@ -43,14 +43,17 @@ Create a database for the product management system:
 sql code
 CREATE DATABASE product_management;
 Ensure the PostgreSQL server is running and accessible.
+
 4.**Set Up Redis**
 
 Install Redis (if not already installed).
 Start Redis server on localhost:6379.
+
 5.**Set Up RabbitMQ**
 
 Install RabbitMQ (if not already installed).
 Start RabbitMQ server on localhost:5672.
+
 6.**Environment Configuration**
 
 You can configure the necessary environment variables in a .env file or directly in your codebase. Example configuration:
