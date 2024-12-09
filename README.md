@@ -32,16 +32,17 @@ Before running the application, ensure you have the following installed:
 2.**Install Dependencies**
 
 Ensure you have the necessary Go dependencies:
-
+ ```bash
 go mod tidy
-
+```
 3.**Set Up PostgreSQL**
 
 Install PostgreSQL (if not already installed).
 
 Create a database for the product management system:
-sql code
+ ```sql code
 CREATE DATABASE product_management;
+```
 Ensure the PostgreSQL server is running and accessible.
 
 4.**Set Up Redis**
@@ -57,7 +58,7 @@ Start RabbitMQ server on localhost:5672.
 6.**Environment Configuration**
 
 You can configure the necessary environment variables in a .env file or directly in your codebase. Example configuration:
-
+ ```env
 DB_HOST=localhost
 DB_PORT=5432
 DB_USER=postgres
@@ -66,19 +67,21 @@ DB_NAME=product_management
 REDIS_HOST=localhost
 REDIS_PORT=6379
 RABBITMQ_URL=amqp://guest:guest@localhost:5672/
+ ```
 
 7.**Run the Application**
 
 Start the main application:
-
+ ```bash
 go run main.go
+ ```
 This will start the API server on http://localhost:8080.
 
-**Database Schema**
+##**Database Schema**
 The application uses PostgreSQL with the following table schema for products and users:
 
 *Product Table*
-
+ ```sql
 CREATE TABLE products (
     id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
@@ -91,15 +94,17 @@ CREATE TABLE products (
     updated_at TIMESTAMP WITH TIME ZONE,
     deleted_at TIMESTAMP WITH TIME ZONE
 );
+```
 *User Table*
+ ```sql
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL
 );
+ ```
 
-
-**Testing Coverage**
+##**Testing Coverage**
 *Unit and Integration Tests*
 The application includes unit and integration tests with over 90% code coverage. These tests cover the core components such as:
 
@@ -108,25 +113,26 @@ Image processing
 Database interactions
 To run tests, use the following command:
 
-go test -v ./...
+ ```go test -v ./... ```
 Note: Make sure your PostgreSQL, Redis, and RabbitMQ services are running before testing.
 
-**Caching Strategy**
+##**Caching Strategy**
 Redis is used to cache product data retrieved via GET /products/:id to reduce load on the database.
 Cache invalidation is handled manually, ensuring that updates to product data are reflected in the cache.
-**Image Processing (Asynchronous)**
+##**Image Processing (Asynchronous)**
 After a product is created, its images are processed asynchronously.
 RabbitMQ is used to queue image processing tasks.
 Image Compression: The image processing service downloads images, resizes them, and stores them in the appropriate location (locally or on cloud storage).
 Redis is used to store compressed image URLs for quick retrieval.
-**Assumptions and Limitations**
+##**Assumptions and Limitations**
 The application assumes that the images provided for products are publicly accessible via URLs.
 The image processing service currently only compresses and resizes images to a fixed width (800px), with further customizations possible.
-**Usage**
+##**Usage**
 POST /products
 Creates a new product with the provided data.
 
 Request Body Example:
+ ```JSON
 {
   "user_id": 1,
   "product_name": "Test Product",
@@ -134,11 +140,11 @@ Request Body Example:
   "product_price": 99.99,
   "product_images": "image1.jpg,image2.jpg"
 }
+```
 GET /products/:id
 Fetches a product by its ID. If the product is cached, the response is returned from Redis for faster access.
-
 Response Example:
-
+ ```JSON
 {
   "id": 1,
   "user_id": 1,
@@ -150,3 +156,4 @@ Response Example:
   "created_at": "2024-12-09T11:16:24+05:30",
   "updated_at": "2024-12-09T11:16:24+05:30"
 }
+ ```
