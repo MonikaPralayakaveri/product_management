@@ -124,7 +124,6 @@ POST /products
 Creates a new product with the provided data.
 
 Request Body Example:
-json code
 {
   "user_id": 1,
   "product_name": "Test Product",
@@ -136,8 +135,7 @@ GET /products/:id
 Fetches a product by its ID. If the product is cached, the response is returned from Redis for faster access.
 
 Response Example:
-json
-Copy code
+
 {
   "id": 1,
   "user_id": 1,
